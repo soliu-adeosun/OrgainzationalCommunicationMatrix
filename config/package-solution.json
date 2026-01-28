@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "orgainzational-communication-matrix-client-side-solution",
+    "id": "fe7c54e1-5605-4bd9-aee1-029650579ba1",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.19.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "orgainzational-communication-matrix description"
+      },
+      "longDescription": {
+        "default": "orgainzational-communication-matrix description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "orgainzational-communication-matrix Feature",
+        "description": "The feature that activates elements of the orgainzational-communication-matrix solution.",
+        "id": "e1223e96-d0fa-474e-ac18-172424d522eb",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/orgainzational-communication-matrix.sppkg"
+  }
+}

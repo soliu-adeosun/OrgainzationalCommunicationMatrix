@@ -1,0 +1,21 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "18.20.4",
+    "sdksVersions": {
+      "@microsoft/microsoft-graph-client": "3.0.2",
+      "@microsoft/teams-js": "2.12.0"
+    },
+    "version": "1.19.0",
+    "libraryName": "orgainzational-communication-matrix",
+    "libraryId": "fe7c54e1-5605-4bd9-aee1-029650579ba1",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "orgainzational-communication-matrix",
+    "solutionShortDescription": "orgainzational-communication-matrix description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}
