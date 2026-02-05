@@ -573,6 +573,8 @@ MainApplication.NewRequestComponent.proceedToList = function (formData, saveMode
                 AppRequest.requestDetails = formData;
                 AppRequest.requestDetails.WorkflowRequestID = updateObj.WorkflowRequestID;
                 updateObj.Year = $spcontext.serverDate().getFullYear();
+                updateObj.RequestCreated = $spcontext.serverDate();
+                updateObj.Month = $spcontext.serverDate().getMonth();
                 updateObj.Title = updateObj.WorkflowRequestID;
 
                 commatrix.updateItems([updateObj], "CommunicationMatrixList", function () {

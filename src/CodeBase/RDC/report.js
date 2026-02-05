@@ -16,8 +16,6 @@ whenReportDependeciesLoaded = function () {
         MainApplication.ReportComponent.updateDateConstraints();
     });
 
-    // $("#requeststrDate").datepicker({ dateFormat: 'yy-mm-dd', beforeShow: function () { jQuery(this).datepicker('option', 'maxDate', $('#requestendDate').val()); } });
-    // $("#requestendDate").datepicker({ dateFormat: 'yy-mm-dd', beforeShow: function () { jQuery(this).datepicker('option', 'minDate', $('#requeststrDate').val()); } });
     AppRequest = new MainApplication.NewRequestComponent.ApplicationDetails();
     AppRequest.fullTableData = [];
     AppRequest.dataForExport = [];
@@ -55,16 +53,21 @@ whenReportDependeciesLoaded = function () {
         },
         "Created": function (valueToEva) {
             var viewStr = `
-                <div class="flex space-x-1 sm:space-x-2">
                     <a href="#/viewrequest?itemId=${valueToEva.WorkflowRequestID}" class="p-1 sm:p-2 text-slate-400 hover:text-green-600 hover:bg-green-50 transition-colors">
                         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
                             <path fill-rule="evenodd" d="M1.38 8.28a.87.87 0 0 1 0-.566 7.003 7.003 0 0 1 13.238.006.87.87 0 0 1 0 .566A7.003 7.003 0 0 1 1.379 8.28ZM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" clip-rule="evenodd" />
                         </svg>
-                    </a>
-                </div>`;
+                    </a>`;
 
-            return viewStr;
+            var updStr = `
+                    <a title="Modify" href="#/viewrequest?itemId=${valueToEva.WorkflowRequestID}&mode=updateStatus" class="p-1 sm:p-2 text-slate-400 hover:text-green-600 hover:bg-green-50 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414 a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                    </a>`;
+
+            return `<div class="flex space-x-1 sm:space-x-2">${viewStr} ${updStr}</div>`;
             
         }
     };
@@ -116,7 +119,13 @@ MainApplication.ReportComponent.retrieveRequest = function () {
     var reportQuery = [{
             ascending: "FALSE",
             orderby: "Modified"
-        }
+        },
+        {
+            operator: 'Eq',
+            field: 'Approval_Status',
+            type: 'Text',
+            val: 'Completed'
+        },
     ];
 
     if (MainApplication.isPureHOD) {

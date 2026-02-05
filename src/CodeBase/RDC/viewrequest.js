@@ -27,6 +27,7 @@ MainApplication.ViewRequestComponent.ApplicationDetails = function () {
     this.returned = false;
     this.messageType = "standard";
     this.documentsToUpdate = {};
+    this.mode = null;
 }
 
 whenViewRequestDependeciesLoaded = function () {
@@ -41,12 +42,19 @@ whenViewRequestDependeciesLoaded = function () {
     customWorkflowEngine = new WorkflowManagerEngine(CurrentUserProperties);
     globalDefinitions.SetWorkflowRouting(customWorkflowEngine);
     AppRequest.itemId = $spcontext.getParameterByName("itemid", window.location.href);
+    AppRequest.mode = $spcontext.getParameterByName("mode", window.location.href);
 
     $spcontext.filesDictionary = {};
 
     $spcontext.applyValidationEvents();
     // MainApplication.ViewRequestComponent.displayManagementDetails();
+    if (AppRequest.mode === "updatestatus" && MainApplication.configuredTaskMembers[globalDefinitions.stageDefinitions.management].belongs) {
+        $("#statusSection").show();
+    }
     MainApplication.ViewRequestComponent.recoverListData();
+    $('#statusSelect').on('change', function () {
+        MainApplication.ViewRequestComponent.updateStatus();
+    });
     setTimeout(function () {
         globalDefinitions.closeLoader();
     }, 2000);
@@ -72,7 +80,7 @@ MainApplication.ViewRequestComponent.recoverListData = function() {
 			"ID", "WorkflowRequestID", "Current_Approver", "Current_Approver_Code", "Approval_Status",
 			"Created", "InitiatorEmailAddress", "InitiatorLogin", "Transaction_History", "ReturnForCorrection",
 			"Modified", "PendingUserEmail", "PendingUserLogin", "Attachment_Folder", "AttachmentURL", "Author",
-			"CMData", "Division_Unit", "HOD", "Contributors", "HODEmail", "Year", "Month", "Comment"
+			"CMData", "Division_Unit", "HOD", "Contributors", "HODEmail", "Year", "Month", "Comment", "Status"
 		];
 
         commatrix.getListToControl(globalDefinitions.stageDefinitions.listname, query, extraProperties, function (listProperties) {
@@ -111,7 +119,10 @@ MainApplication.ViewRequestComponent.recoverListData = function() {
                                 $("#transaction-history").show();
                                 globalDefinitions.displayHistory(listProperties.Transaction_History);
                             }
-
+                            if (listProperties.Status) {
+                                $("#statusSelect").val(listProperties.Status);
+                            }
+                            
                             // if (listProperties.Current_Approver !== "Employee" && listProperties.Current_Approver_Code !== "AA1") {
                             // 	listProperties.Comment = "";
                             // }
@@ -119,7 +130,7 @@ MainApplication.ViewRequestComponent.recoverListData = function() {
                             MainApplication.renderCommunicationTemplatesReadOnly(listProperties.CMData);
                             AppRequest.requestDetails = listProperties;
 
-                            // $spcontext.htmlBind(listProperties);
+                            $spcontext.htmlBind(listProperties);
 
                             // if (AppRequest.requestDetails.Current_Approver !== 'Employee'){
                             // $spcontext.attachmentLinkBind(listProperties.AttachmentURL);
@@ -149,4 +160,29 @@ MainApplication.ViewRequestComponent.recoverListData = function() {
         MainApplication.notyf.error("Invalid Request...");
         $spcontext.redirect("#/", false);
     }
+}
+
+MainApplication.ViewRequestComponent.updateStatus = function () {
+    globalDefinitions.callLoader();
+    var formData = {};
+    formData.Status = $("#statusSelect").val();
+	formData.ID = AppRequest.requestDetails.ID;
+    var historyProp = {
+        stage: "Admin",
+        comment: AppRequest.comment,
+        action: "Status Updated",
+    };
+
+	formData = customWorkflowEngine.routeEngine(customWorkflowEngine).requestHistoryHandler(formData, AppRequest.requestDetails.Transaction_History, historyProp);
+
+	commatrix.updateItems([formData], "CommunicationMatrixList", function () {
+		// AppRequest.requestDetails.Current_Approver = formData.Current_Approver;
+		globalDefinitions.closeLoader();
+        $("#currentStatus").val(formData.Status);
+		globalDefinitions.HandlerSuccess(`You have successfully updated the status of this form`);
+		globalDefinitions.AuditLogManager_SaveLog({
+			Action: `took action on RDC request ${AppRequest.requestDetails.WorkflowRequestID}`,
+		});
+	});		
+	globalDefinitions.closeLoader();
 }
