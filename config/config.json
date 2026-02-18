@@ -158,6 +158,15 @@
         "speedpoint_core",
         "main"
       ]
+    },
+    "analytics": {
+      "path": "src/codebase/rdc/analytics.js",
+      "globalName": "analytics",
+      "globalDependencies": [
+        "global",
+        "speedpoint_core",
+        "main"
+      ]
     }
   },
   "localizedResources": {

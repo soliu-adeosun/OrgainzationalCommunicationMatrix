@@ -836,7 +836,11 @@
  }
 
  .text-red-500 {
-     color: var(--coral-500);
+     color: var(--red-900);
+ }
+
+  .text-red-700 {
+     color: var(--red-700);
  }
 
  .focus\:ring-red-500:focus {

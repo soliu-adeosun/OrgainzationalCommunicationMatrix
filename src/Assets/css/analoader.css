@@ -1,0 +1,89 @@
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        #e6e6e6 25%,
+        #f2f2f2 37%,
+        #e6e6e6 63%
+    );
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+    border-radius: 6px;
+}
+
+@keyframes shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+}
+
+.skeleton-card {
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+
+.skeleton-title {
+    height: 24px;
+    width: 300px;
+    margin: 0 auto 30px auto;
+}
+
+.skeleton-title.small {
+    width: 180px;
+    height: 18px;
+    margin-bottom: 20px;
+}
+
+.skeleton-donut.large {
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    margin: 0 auto 30px auto;
+}
+
+.skeleton-donut.medium {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.skeleton-legend {
+    height: 18px;
+    width: 400px;
+    margin: 15px auto;
+}
+
+.skeleton-legend.small {
+    width: 200px;
+    height: 14px;
+}
+
+.skeleton-section-title {
+    height: 28px;
+    width: 400px;
+    margin: 40px auto;
+}
+
+.division-grid {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease-in forwards;
+}
+
+.bg-green-500 {
+    background-color: #678867;
+}
+
+.bg-yellow-500 {
+    background-color: #d8d85db8;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

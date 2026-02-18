@@ -176,6 +176,22 @@ const GlobalTopNav: React.FC = () => {
                                 <span className="font-medium">Report</span>
                             </Link>
                         </div>
+                        <div className="relative analyticsNavMobile hidden">
+                            {activePath === "/analytics" && <div className="absolute left-0 top-0 bottom-0 w-1 bg-red-500" />}
+                            <Link
+                                to="/analytics"
+                                onClick={closeMobileMenu}
+                                className={`w-full flex items-center px-6 py-4 text-left transition-all duration-200 hover:bg-slate-600 ${
+                                    activePath === "/analytics" ? "bg-slate-600 text-white border-r-2 border-red-500" : "text-slate-300 hover:text-white"
+                                }`}
+                            >
+                                <svg className="w-5 h-5 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+                                </svg>
+                                <span className="font-medium">Analytics</span>
+                            </Link>
+                        </div>
                     </nav>
                 </div>
             </div>

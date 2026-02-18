@@ -8,6 +8,7 @@ import NewRequest from "./pages/NewRequest";
 import ApproveRequest from "./pages/ApproveRequest";
 import ViewRequest from "./pages/ViewRequest";
 import Report from './pages/Report';
+import Analytics from './pages/Analytics';
 
 
 require('main');
@@ -20,6 +21,7 @@ declare global {
     loadApproveRequestComponent: () => void;
     loadViewRequestComponent: () => void;
     loadReportComponent: () => void;
+    loadAnalyticsComponent: () => void;
   }
 }
 export default class CommunicationMatrix extends React.Component<ICommunicationMatrixProps, {}> {
@@ -36,6 +38,7 @@ export default class CommunicationMatrix extends React.Component<ICommunicationM
               <Route path="approverequest" element={<ApproveRequest />} />
               <Route path="viewrequest" element={<ViewRequest />} />
               <Route path="report" element={<Report />} />
+              <Route path="analytics" element={<Analytics />} />
             </Route>
           </Routes>
         </HashRouter>

@@ -31,27 +31,6 @@ export const FilterBox = () => {
                             <input type="date" id="requestendDate" className="date-input end-date-input" />
                         </div>
                     </div>
-                    <div className="filter-row">
-                        <div className="filter-item">
-                            <label className="filter-label" htmlFor="statusSelect">Please select a status</label>
-                            <select id="statusSelect" className="filter-select status-dropdown" speed-bind-query="Approval_Status" speed-operator="Eq">
-                                <option value="">Please select a status</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Declined">Declined</option>
-                                <option value="Completed">Completed</option>
-                            </select>
-                        </div>
-                        <div className="filter-item">
-                            <label className="filter-label" htmlFor="rdcStatusSelect">RDC Status</label>
-                            <select id="rdcStatusSelect" className="filter-select status-dropdown" speed-bind-query="RDC_Status" speed-operator="Eq">
-                                <option value="">Please select a status</option>
-                                <option value="RDC has been Submitted">RDC has been Submitted</option>
-                                <option value="HOD has approved">HOD has approved</option>
-                                <option value="Management Rep has Reviewed">Management Rep has Reviewed</option>
-                                <option value="Executive management has Approved">Executive management has Approved</option>
-                            </select>
-                        </div>
-                    </div>
                 </div>
                 {/* <button id="searchbtn" className="search-button">Search</button> */}
             </div>

@@ -72,6 +72,7 @@ function MainStartPoint() {
   this.ApproveRequestComponent = {};
   this.ViewRequestComponent = {};
   this.ReportComponent = {};
+  this.AnalyticsComponent = {};
 
   this.CurrentPageSubmitFunction = null;
   this.modeOfCommunication = [];
@@ -303,6 +304,8 @@ function whenLayoutLoaded() {
           if (MainApplication.isUserAnActor){
             $(".reportNav").show();
             $(".reportNavMobile").show();
+            $(".analyticsNav").show();
+            $(".analyticsNavMobile").show();
 
             // $(".newNCNav").show();
             // $(".newNCNavMobile").show();
@@ -333,7 +336,8 @@ MainApplication.reportSyncSearch = function (keyquery, data) {
     item.EmployeeEmail?.toLowerCase().includes(keyquery) ||
     item.Approval_Status?.toLowerCase().includes(keyquery) ||
     item.Current_Approver?.toLowerCase().includes(keyquery) ||
-    item.RDC_Status?.toLowerCase().includes(keyquery)
+    item.RDC_Status?.toLowerCase().includes(keyquery) ||
+    item.Year?.toLowerCase().includes(keyquery)
   );
 };
 
@@ -395,7 +399,7 @@ MainApplication.renderCommunicationTemplatesReadOnly = function (dataArray) {
                 </div>
 
                 <!-- Accordion Body -->
-                <div class="accordion-body bg-white p-4 sm:p-6 hidden">
+                <div class="accordion-body bg-white p-4 sm:p-6">
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
 

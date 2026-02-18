@@ -120,7 +120,9 @@ MainApplication.ViewRequestComponent.recoverListData = function() {
                                 globalDefinitions.displayHistory(listProperties.Transaction_History);
                             }
                             if (listProperties.Status) {
-                                $("#statusSelect").val(listProperties.Status);
+                                const statusValue = listProperties.Status || "";
+
+                                $("#statusSelect").val(statusValue).prop("disabled", !!statusValue);
                             }
                             
                             // if (listProperties.Current_Approver !== "Employee" && listProperties.Current_Approver_Code !== "AA1") {
@@ -179,6 +181,7 @@ MainApplication.ViewRequestComponent.updateStatus = function () {
 		// AppRequest.requestDetails.Current_Approver = formData.Current_Approver;
 		globalDefinitions.closeLoader();
         $("#currentStatus").val(formData.Status);
+        $("#statusSelect").prop("disabled", true);
 		globalDefinitions.HandlerSuccess(`You have successfully updated the status of this form`);
 		globalDefinitions.AuditLogManager_SaveLog({
 			Action: `took action on RDC request ${AppRequest.requestDetails.WorkflowRequestID}`,

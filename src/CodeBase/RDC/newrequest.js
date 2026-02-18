@@ -117,7 +117,7 @@ $(document).on('click', '.toggleAccordion', function (e) {
     const $header = $section.find('.accordion-header');
 
     // Close others if needed (optional)
-    $('.accordion-body').not($body).slideUp();
+    // $('.accordion-body').not($body).slideUp();
 
     // $body.stop(true, true).slideToggle(200);
 
@@ -269,7 +269,7 @@ MainApplication.NewRequestComponent.addCommunicationTemplate = function () {
             </div>
 
             <!-- Accordion Body -->
-            <div class="accordion-body bg-white p-4 sm:p-6 hidden">
+            <div class="accordion-body bg-white p-4 sm:p-6">
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
 
@@ -732,7 +732,7 @@ MainApplication.NewRequestComponent.renderCommunicationTemplatesFromData = funct
                 </div>
 
                 <!-- Accordion Body -->
-                <div class="accordion-body bg-white p-4 sm:p-6 hidden">
+                <div class="accordion-body bg-white p-4 sm:p-6">
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
 
@@ -810,7 +810,6 @@ MainApplication.NewRequestComponent.renderBoundSelect = function (bind, label, o
         </div>
     `;
 }
-
 
 MainApplication.NewRequestComponent.compareExistingData = function (callback) {
 

@@ -6,6 +6,17 @@ loadReportComponent = function () {
     }
 };
 
+var AppRequest;
+var customWorkflowEngine;
+
+MainApplication.ReportComponent.ApplicationDetails = function () {
+    this.url = window.location.href;
+    this.itemId = null;
+    this.mode = null;
+    this.requestDetails = {};
+    this.Attachments = [];
+}
+
 whenReportDependeciesLoaded = function () {
     globalDefinitions.callLoader();
     globalDefinitions.extendStages();
@@ -16,7 +27,7 @@ whenReportDependeciesLoaded = function () {
         MainApplication.ReportComponent.updateDateConstraints();
     });
 
-    AppRequest = new MainApplication.NewRequestComponent.ApplicationDetails();
+    AppRequest = new MainApplication.ReportComponent.ApplicationDetails();
     AppRequest.fullTableData = [];
     AppRequest.dataForExport = [];
 
@@ -167,7 +178,8 @@ MainApplication.ReportComponent.retrieveRequest = function () {
             "ID", "WorkflowRequestID", "Current_Approver", "Current_Approver_Code", "Approval_Status",
             "Created", "InitiatorEmailAddress", "InitiatorLogin", "Transaction_History", "ReturnForCorrection",
             "Modified", "PendingUserEmail", "PendingUserLogin", "Attachment_Folder", "AttachmentURL", "Author",
-            "CMData", "Division_Unit", "HOD", "Contributors", "HODEmail", "Year", "Month", "Comment"
+            "CMData", "Division_Unit", "HOD", "Contributors", "HODEmail", "Year", "Month", "Comment", "NumberOfEntries",
+            "NumberOfCompliance", "NumberOfNonCompliance", "Status"
         ]
     };
 
