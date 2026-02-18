@@ -78,7 +78,7 @@ const GlobalTopNav: React.FC = () => {
                     <div className="px-4 sm:px-6 py-4 border-b border-slate-600">
                         <div className="flex gap-3 items-center">
                             <img src={require("../Assets/img/rslogo_mono.png")} style={{ marginLeft: "-10px", maxWidth: "100%" }} id="companylogo" alt="Company logo" />
-                            <h2 className="text-xl font-semibold text-white">OCM Revision: <span id="auditmanagementversionMobile"></span></h2>
+                            <h2 className="text-xl font-semibold text-white">Revision: <span id="auditmanagementversionMobile"></span></h2>
                         </div>
                         <h2 className="text-lg font-semibold text-white">Effective Date: <span id="versioneffectivedateMobile"></span></h2>
                     </div>

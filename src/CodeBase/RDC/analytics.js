@@ -233,7 +233,7 @@ MainApplication.AnalyticsComponent.renderComplianceDashboard = function (items) 
                 ],
                 datasets: [{
                     data: [orgCompliance, orgNonCompliance],
-                    backgroundColor: ['#31527d', '#ef4444'],
+                    backgroundColor: ['#00A4A6', '#FF8C00'],
                     borderWidth: 1
                 }]
             },

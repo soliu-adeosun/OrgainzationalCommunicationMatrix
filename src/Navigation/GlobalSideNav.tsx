@@ -33,7 +33,7 @@ const GlobalSideNav: React.FC = () => {
                             </h2>
                         </div>
                         <h2 className="text-xl font-semibold text-white">
-                            OCM Revision: <span id="auditmanagementversion"></span>
+                            Revision: <span id="auditmanagementversion"></span>
                         </h2>
                         <h2 className="text-lg font-semibold text-white">
                             Effective Date: <span id="versioneffectivedate"></span>
