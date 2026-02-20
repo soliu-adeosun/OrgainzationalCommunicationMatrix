@@ -37,9 +37,16 @@ whenAnalyticsDependeciesLoaded = function () {
     customWorkflowEngine = new WorkflowManagerEngine(CurrentUserProperties);
 
     $("#filterYear").on("change", function () {
-        var searchQuery = $(this).val();
+        var selectedYear = $(this).val();
         var data = AppRequest.fullTableData || [];
-        var filteredItems = MainApplication.reportSyncSearch(searchQuery, data);
+        var filteredItems;
+        if (selectedYear) {
+            filteredItems = data.filter(function (item) {
+                return item.Year == selectedYear;
+            });
+        } else {
+            filteredItems = data;
+        }
         MainApplication.AnalyticsComponent.renderComplianceDashboard(filteredItems);
     });
 
@@ -63,22 +70,28 @@ MainApplication.AnalyticsComponent.retrieveRequest = function () {
         ascending: "FALSE",
         orderby: "Modified"
     },
-        // {
-        //     operator: 'Eq',
-        //     field: 'Approval_Status',
-        //     type: 'Text',
-        //     val: 'Completed'
-        // },
+        {
+            operator: 'Eq',
+            field: 'Approval_Status',
+            type: 'Text',
+            val: 'Completed'
+        },
+        {
+            operator: 'Eq',
+            field: 'Monitored',
+            type: 'Text',
+            val: 'Yes'
+        }
     ];
 
-    if (MainApplication.isPureHOD) {
-        reportQuery.push({
-            operator: 'Eq',
-            field: 'HOD',
-            type: 'User',
-            val: CurrentUserProperties.title
-        });
-    }
+    // if (MainApplication.isPureHOD) {
+    //     reportQuery.push({
+    //         operator: 'Eq',
+    //         field: 'HOD',
+    //         type: 'User',
+    //         val: CurrentUserProperties.title
+    //     });
+    // }
 
     // //and filter fields
     // if ($("#requeststrDate").val() !== '') {
@@ -111,7 +124,7 @@ MainApplication.AnalyticsComponent.retrieveRequest = function () {
             "Created", "InitiatorEmailAddress", "InitiatorLogin", "Transaction_History", "ReturnForCorrection",
             "Modified", "PendingUserEmail", "PendingUserLogin", "Attachment_Folder", "AttachmentURL", "Author",
             "CMData", "Division_Unit", "HOD", "Contributors", "HODEmail", "Year", "Month", "Comment", "NumberOfEntries",
-            "NumberOfCompliance", "NumberOfNonCompliance", "Status"
+            "NumberOfCompliance", "NumberOfNonCompliance", "Monitored"
         ]
     };
 
@@ -169,10 +182,6 @@ MainApplication.AnalyticsComponent.updateDateConstraints = function () {
 }
 
 MainApplication.AnalyticsComponent.renderComplianceDashboard = function (items) {
-
-    // =========================
-    // Aggregate data
-    // =========================
     const divisionStats = {};
     let orgCompliance = 0;
     let orgNonCompliance = 0;
@@ -200,6 +209,15 @@ MainApplication.AnalyticsComponent.renderComplianceDashboard = function (items) 
     const orgCompPct = orgTotal > 0 ? (orgCompliance / orgTotal * 100).toFixed(1) : 0;
     const orgNonPct = orgTotal > 0 ? (orgNonCompliance / orgTotal * 100).toFixed(1) : 0;
 
+    const orgNonConfRatio = orgTotal > 0 ? (orgNonCompliance / orgTotal) : 0;
+    if (orgNonConfRatio >= 0.5) {
+        $('.card').addClass('text-red-100');
+    } else if (orgNonConfRatio >= 0.2) {
+        $('.card').addClass('pending');
+    } else {
+        $('.card').addClass('completed');
+    }
+
     $('#orgTotalEntries').text(orgTotal);
 
     setTimeout(() => {
@@ -224,113 +242,130 @@ MainApplication.AnalyticsComponent.renderComplianceDashboard = function (items) 
         const orgCtx = orgCanvas.getContext('2d');
         if (!orgCtx) return;
 
-        MainApplication.AnalyticsComponent._orgChart = new Chart(orgCtx, {
-            type: 'doughnut',
-            data: {
-                labels: [
-                    `Compliant (${orgCompPct}%) (${orgCompliance})`,
-                    `Non-Compliant (${orgNonPct}%) (${orgNonCompliance})`
-                ],
-                datasets: [{
-                    data: [orgCompliance, orgNonCompliance],
-                    backgroundColor: ['#00A4A6', '#FF8C00'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { font: { size: 14 } }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: (context) => {
-                                const label = context.label || '';
-                                const value = context.raw;
-                                return `${label}: ${value} entries`;
+        if (orgTotal === 0) {
+            orgCtx.clearRect(0, 0, orgCanvas.width, orgCanvas.height);
+            orgCtx.font = "16px sans-serif";
+            orgCtx.textAlign = "center";
+            orgCtx.textBaseline = "middle";
+            orgCtx.fillStyle = "#666";
+            orgCtx.fillText("No data available.", orgCanvas.width / 2, orgCanvas.height / 2);
+            // return;
+        } else {
+
+            MainApplication.AnalyticsComponent._orgChart = new Chart(orgCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        `Compliant (${orgCompPct}%) (${orgCompliance})`,
+                        `Non-Compliant (${orgNonPct}%) (${orgNonCompliance})`
+                    ],
+                    datasets: [{
+                        data: [orgCompliance, orgNonCompliance],
+                        backgroundColor: ['#00A4A6', '#FF8C00'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 14 } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => {
+                                    const label = context.label || '';
+                                    const value = context.raw;
+                                    return `${label}: ${value} entries`;
+                                }
                             }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Overall Compliance Distribution',
+                            font: { size: 18 },
+                            color: '#1d3d66'
                         }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Overall Compliance Distribution',
-                        font: { size: 18 },
-                        color: '#1d3d66'
                     }
                 }
-            }
-        });
+            });
+        }
 
         // =========================
         // CLEAR OLD DIVISION CONTENT
         // =========================
         const container = $('#divisionCards');
         container.empty();
+        
+        if (Object.keys(divisionStats).length === 0) {
+            container.append('<div class="col-span-full text-center py-8 text-gray-500">No data available.</div>');
+            container.removeClass('grid');
+        } else {
+            // =========================
+            // BUILD STATUS CARDS
+            // =========================
+            Object.keys(divisionStats).forEach(div => {
 
-        // =========================
-        // BUILD STATUS CARDS
-        // =========================
-        Object.keys(divisionStats).forEach(div => {
+                const stats = divisionStats[div];
+                const total = stats.total || 0;
+                const conformance = stats.compliance || 0;
+                const nonConformance = stats.nonCompliance || 0;
 
-            const stats = divisionStats[div];
-            const total = stats.total || 0;
-            const conformance = stats.compliance || 0;
-            const nonConformance = stats.nonCompliance || 0;
+                const confPct = total > 0 ? ((conformance / total) * 100).toFixed(1) : "0.0";
+                const nonConfPct = total > 0 ? ((nonConformance / total) * 100).toFixed(1) : "0.0";
 
-            const confPct = total > 0 ? ((conformance / total) * 100).toFixed(1) : "0.0";
-            const nonConfPct = total > 0 ? ((nonConformance / total) * 100).toFixed(1) : "0.0";
+                // --------------------------------
+                // Determine Severity Based on Non-Conformance %
+                // --------------------------------
+                let cardClass = "";
+                let dotClass = "";
 
-            // --------------------------------
-            // Determine Severity Based on Non-Conformance %
-            // --------------------------------
-            let cardClass = "";
-            let dotClass = "";
+                const nonConfRatio = total > 0 ? (nonConformance / total) : 0;
 
-            const nonConfRatio = total > 0 ? (nonConformance / total) : 0;
+                if (nonConfRatio >= 0.5) {
+                    cardClass = "bg-red-100 border-red-200";
+                    dotClass = "bg-red-500";
+                } else if (nonConfRatio >= 0.2) {
+                    cardClass = "pending";
+                    dotClass = "bg-yellow-500";
+                } else {
+                    cardClass = "completed";
+                    dotClass = "bg-green-500";
+                }
 
-            if (nonConfRatio >= 0.5) {
-                cardClass = "bg-red-100 border-red-200";
-                dotClass = "bg-red-500";
-            } else if (nonConfRatio >= 0.2) {
-                cardClass = "pending";
-                dotClass = "bg-yellow-500";
-            } else {
-                cardClass = "completed";
-                dotClass = "bg-green-500";
-            }
+                const card = `
+            <div class="${cardClass} border rounded-xl shadow-sm p-4 transition hover:shadow-md">
+                <div class="flex items-start gap-3">
+                    <span class="w-3 h-3 mt-2 rounded-full ${dotClass}"></span>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">
+                            ${div}
+                        </h3>
 
-            const card = `
-        <div class="${cardClass} border rounded-xl shadow-sm p-4 transition hover:shadow-md">
-            <div class="flex items-start gap-3">
-                <span class="w-3 h-3 mt-2 rounded-full ${dotClass}"></span>
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-800">
-                        ${div}
-                    </h3>
+                        <p class="text-sm text-gray-700 mt-1">
+                            ${total} entries
+                        </p>
 
-                    <p class="text-sm text-gray-700 mt-1">
-                        ${total} entries
-                    </p>
-
-                    <p class="text-sm mt-1">
-                        <span class="font-medium text-green-700">
-                            ${confPct}% Compliant (${conformance})
-                        </span>
-                        ·
-                        <span class="font-medium text-red-700">
-                            ${nonConfPct}% Non-Compliant (${nonConformance})
-                        </span>
-                    </p>
+                        <p class="text-sm mt-1">
+                            <span class="font-medium text-green-700">
+                                ${confPct}% Compliant (${conformance})
+                            </span>
+                            ·
+                            <span class="font-medium text-red-700">
+                                ${nonConfPct}% Non-Compliant (${nonConformance})
+                            </span>
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-    `;
+        `;
 
-            container.append(card);
-        });
+                container.append(card);
+                container.addClass('grid');
+            });
+        }
 
 
     }, 0);

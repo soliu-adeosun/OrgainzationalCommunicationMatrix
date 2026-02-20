@@ -81,7 +81,6 @@ whenDashboardDependeciesLoaded = function () {
             } catch (error) { }
 
             var approvalStr = `
-                <div class="flex space-x-1 sm:space-x-2">
 
                                     ${isActor ? `
                 <a title="Action" href="#/approverequest?itemId=${valueToEva.WorkflowRequestID}" 
@@ -91,12 +90,9 @@ whenDashboardDependeciesLoaded = function () {
                 <path fill-rule="evenodd" d="M11.986 3H12a2 2 0 0 1 2 2v6a2 2 0 0 1-1.5 1.937V7A2.5 2.5 0 0 0 10 4.5H4.063A2 2 0 0 1 6 3h.014A2.25 2.25 0 0 1 8.25 1h1.5a2.25 2.25 0 0 1 2.236 2ZM10.5 4v-.75a.75.75 0 0 0-.75-.75h-1.5a.75.75 0 0 0-.75.75V4h3Z" clip-rule="evenodd" />
                 <path fill-rule="evenodd" d="M3 6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H3Zm1.75 2.5a.75.75 0 0 0 0 1.5h3.5a.75.75 0 0 0 0-1.5h-3.5ZM4 11.75a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 0 1.5h-3.5a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
                 </svg>
-                </a>` : ''}
-                
-                </div>`;
+                </a>` : ''}`;
 
             var editStr = `
-                <div class="flex space-x-1 sm:space-x-2">
                 <a title="Modify" href="#/newrequest?itemId=${valueToEva.WorkflowRequestID}&mode=modify" 
 
                                         class="p-1 sm:p-2 text-slate-400 hover:text-green-600 hover:bg-green-50 transition-colors">
@@ -107,11 +103,9 @@ whenDashboardDependeciesLoaded = function () {
 
                                                 a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
-                </a>
-                </div>`;
+                </a>`;
 
             var editDraftStr = `
-                <div class="flex space-x-1 sm:space-x-2">
                 <a title="Modify" href="#/newrequest?itemId=${valueToEva.WorkflowRequestID}&mode=editdraft" 
 
                                         class="p-1 sm:p-2 text-slate-400 hover:text-green-600 hover:bg-green-50 transition-colors">
@@ -122,11 +116,10 @@ whenDashboardDependeciesLoaded = function () {
 
                                                 a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
-                </a>
-                </div>`;
+                </a>`;
 
             var viewStr = `
-                <div class="flex space-x-1 sm:space-x-2">
+                
                 <a title="View" href="#/viewrequest?itemId=${valueToEva.WorkflowRequestID}" 
 
                                         class="p-1 sm:p-2 text-slate-400 hover:text-green-600 hover:bg-green-50 transition-colors">
@@ -140,25 +133,16 @@ whenDashboardDependeciesLoaded = function () {
 
                                                 3 3 0 0 1 6 0Z" clip-rule="evenodd" />
                 </svg>
-                </a>
-                </div>`;
+                </a>`;
 
             if ((valueToEva.Approval_Status === "Pending" && valueToEva.Current_Approver === "Employee")) {
-
-                return editDraftStr;
-
+                return `<div class="flex space-x-1 sm:space-x-2">${viewStr} ${editDraftStr}</div>`;
             } else if (valueToEva.Approval_Status === "Declined" && valueToEva.ReturnForCorrection === "Yes") {
-
-                return editStr;
-
+                return `<div class="flex space-x-1 sm:space-x-2">${viewStr} ${editStr}</div>`;
             } else if (valueToEva.Approval_Status === "Completed" || valueToEva.Approval_Status === "Declined") {
-
-                return viewStr;
-
+                return `<div class="flex space-x-1 sm:space-x-2">${viewStr}</div>`;
             } else {
-
-                return approvalStr;
-
+                return `<div class="flex space-x-1 sm:space-x-2">${viewStr} ${approvalStr}</div>`;
             }
 
         }

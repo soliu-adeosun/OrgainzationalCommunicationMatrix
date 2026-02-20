@@ -23,9 +23,9 @@ whenReportDependeciesLoaded = function () {
     globalDefinitions.sortResponse();
 
     // Attach change event listeners to both date inputs
-    $("#requeststrDate, #requestendDate").on("change", function () {
-        MainApplication.ReportComponent.updateDateConstraints();
-    });
+    // $("#requeststrDate, #requestendDate").on("change", function () {
+    //     MainApplication.ReportComponent.updateDateConstraints();
+    // });
 
     AppRequest = new MainApplication.ReportComponent.ApplicationDetails();
     AppRequest.fullTableData = [];
@@ -78,8 +78,11 @@ whenReportDependeciesLoaded = function () {
                         </svg>
                     </a>`;
 
-            return `<div class="flex space-x-1 sm:space-x-2">${viewStr} ${updStr}</div>`;
-            
+            if (valueToEva.Monitored === "Yes"){
+                return `<div class="flex space-x-1 sm:space-x-2">${viewStr}</div>`;
+            } else {
+                return `<div class="flex space-x-1 sm:space-x-2">${viewStr} ${updStr}</div>`;
+            }
         }
     };
 
@@ -89,7 +92,7 @@ whenReportDependeciesLoaded = function () {
 
     // let debounceTimer;
 
-    $("#employeeName, #nextApprover, #statusSelect, #rdcStatusSelect, #requeststrDate, #requestendDate").on("keyup change", function () {
+    $("#employeeName, #nextApprover").on("keyup change", function () {
         // clearTimeout(debounceTimer);
         // debounceTimer = setTimeout(() => {
             MainApplication.ReportComponent.retrieveRequest();
@@ -149,25 +152,25 @@ MainApplication.ReportComponent.retrieveRequest = function () {
     }
 
     //and filter fields
-    if ($("#requeststrDate").val() !== '') {
-        var rstrdate = {
-            val: new Date($("#requeststrDate").val()).toISOString(),
-            type: 'DateTime',
-            field: 'Created',
-            operator: 'Geq'
-        }
-        reportQuery.push(rstrdate);
-    }
+    // if ($("#requeststrDate").val() !== '') {
+    //     var rstrdate = {
+    //         val: new Date($("#requeststrDate").val()).toISOString(),
+    //         type: 'DateTime',
+    //         field: 'Created',
+    //         operator: 'Geq'
+    //     }
+    //     reportQuery.push(rstrdate);
+    // }
 
-    if ($("#requestendDate").val() !== '') {
-        var renddate = {
-            val: new Date($("#requestendDate").val()).toISOString(),
-            type: 'DateTime',
-            field: 'Created',
-            operator: 'Leq'
-        }
-        reportQuery.push(renddate);
-    }
+    // if ($("#requestendDate").val() !== '') {
+    //     var renddate = {
+    //         val: new Date($("#requestendDate").val()).toISOString(),
+    //         type: 'DateTime',
+    //         field: 'Created',
+    //         operator: 'Leq'
+    //     }
+    //     reportQuery.push(renddate);
+    // }
 
     reportQuery = commatrix.formQueryArrayGenerator(reportQuery);
 
@@ -179,7 +182,7 @@ MainApplication.ReportComponent.retrieveRequest = function () {
             "Created", "InitiatorEmailAddress", "InitiatorLogin", "Transaction_History", "ReturnForCorrection",
             "Modified", "PendingUserEmail", "PendingUserLogin", "Attachment_Folder", "AttachmentURL", "Author",
             "CMData", "Division_Unit", "HOD", "Contributors", "HODEmail", "Year", "Month", "Comment", "NumberOfEntries",
-            "NumberOfCompliance", "NumberOfNonCompliance", "Status"
+            "NumberOfCompliance", "NumberOfNonCompliance", "Monitored"
         ]
     };
 

@@ -21,13 +21,13 @@ export default class Analytics extends React.Component<{}, {}> {
                                 <select name="" id="filterYear" className="filter-select status-dropdown"></select>
                             </div>
                             
-                            <div className="bg-white border rounded-xl shadow p-6 card">
-                            <div className="h-80">
-                                <canvas id="orgComplianceChart" />
-                            </div>
-                            <p className="text-center mt-4 text-gray-600">
-                                Based on <strong id="orgTotalEntries">0</strong> total entries
-                            </p>
+                            <div id='orgCard' className="border rounded-xl shadow p-6 card">
+                                <div className="h-80">
+                                    <canvas id="orgComplianceChart" />
+                                </div>
+                                <p className="text-center mt-4 text-gray-600">
+                                    Based on <strong id="orgTotalEntries">0</strong> total entries
+                                </p>
                             </div>
                         </section>
                         {/* Division Cards */}

@@ -303,6 +303,7 @@ MainApplication.NewRequestComponent.addCommunicationTemplate = function () {
                             <option value="">Select</option>
                             <option>Internal</option>
                             <option>External</option>
+                            <option>Internal/External</option>
                         </select>
                     </div>
 
@@ -464,7 +465,7 @@ MainApplication.NewRequestComponent.saveDataToList = function () {
         formData.CMData = JSON.stringify(formData.CMData);
 
         const contributorEmails = MainApplication.NewRequestComponent.getAllContributorEmails();
-        const complianceSummary = MainApplication.NewRequestComponent.getComplianceSummary();
+        // const complianceSummary = MainApplication.NewRequestComponent.getComplianceSummary();
 
         const multiUsers = contributorEmails.map(email =>
             SP.FieldUserValue.fromUser(email.trim())
@@ -474,9 +475,9 @@ MainApplication.NewRequestComponent.saveDataToList = function () {
         let hodmail = MainApplication.staffDetails[CurrentUserProperties.login].HodEmail;
         formData.HOD = SP.FieldUserValue.fromUser(hodmail);
         formData.HODEmail = hodmail;
-        formData.NumberOfEntries = complianceSummary.totalTemplates;
-        formData.NumberOfCompliance = complianceSummary.yesCount;
-        formData.NumberOfNonCompliance = complianceSummary.noCount;
+        // formData.NumberOfEntries = complianceSummary.totalTemplates;
+        // formData.NumberOfCompliance = complianceSummary.yesCount;
+        // formData.NumberOfNonCompliance = complianceSummary.noCount;
 
 
 
@@ -522,7 +523,7 @@ MainApplication.NewRequestComponent.saveDataToListAsDraft = function () {
         formData.CMData = JSON.stringify(formData.CMData);
 
         const contributorEmails = MainApplication.NewRequestComponent.getAllContributorEmails();
-        const complianceSummary = MainApplication.NewRequestComponent.getComplianceSummary();
+        // const complianceSummary = MainApplication.NewRequestComponent.getComplianceSummary();
         const multiUsers = contributorEmails.map(email =>
             SP.FieldUserValue.fromUser(email.trim())
         );
@@ -531,9 +532,9 @@ MainApplication.NewRequestComponent.saveDataToListAsDraft = function () {
         let hodmail = MainApplication.staffDetails[CurrentUserProperties.login].HodEmail;
         formData.HOD = SP.FieldUserValue.fromUser(hodmail);
         formData.HODEmail = hodmail;
-        formData.NumberOfEntries = complianceSummary.totalTemplates;
-        formData.NumberOfCompliance = complianceSummary.yesCount;
-        formData.NumberOfNonCompliance = complianceSummary.noCount;
+        // formData.NumberOfEntries = complianceSummary.totalTemplates;
+        // formData.NumberOfCompliance = complianceSummary.yesCount;
+        // formData.NumberOfNonCompliance = complianceSummary.noCount;
 
         formData.Approval_Status = "Pending";
         formData.Current_Approver = "Employee";
@@ -576,6 +577,7 @@ MainApplication.NewRequestComponent.proceedToList = function (formData, saveMode
                 updateObj.RequestCreated = $spcontext.serverDate();
                 updateObj.Month = $spcontext.serverDate().getMonth();
                 updateObj.Title = updateObj.WorkflowRequestID;
+                updateObj.Monitored = "No";
 
                 commatrix.updateItems([updateObj], "CommunicationMatrixList", function () {
                     setTimeout(() => {

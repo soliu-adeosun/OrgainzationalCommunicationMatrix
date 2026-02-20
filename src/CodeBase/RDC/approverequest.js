@@ -244,7 +244,7 @@ MainApplication.ApproveRequestComponent.proceedToList = function (formData) {
 		globalDefinitions.closeLoader();
 		globalDefinitions.HandlerSuccess(`You have successfully taken action on this request`);
 		globalDefinitions.AuditLogManager_SaveLog({
-			Action: `took action on RDC request ${AppRequest.requestDetails.WorkflowRequestID}`,
+			Action: `took action on communication matrix request ${AppRequest.requestDetails.WorkflowRequestID}`,
 		});
 		$spcontext.redirect("#/", false);
 	});		

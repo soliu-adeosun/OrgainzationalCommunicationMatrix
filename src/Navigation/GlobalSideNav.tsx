@@ -32,10 +32,10 @@ const GlobalSideNav: React.FC = () => {
                                 Organizational Communication Matrix
                             </h2>
                         </div>
-                        <h2 className="text-xl font-semibold text-white">
+                        <h2 className="reduced-text font-semibold text-white">
                             Revision: <span id="auditmanagementversion"></span>
                         </h2>
-                        <h2 className="text-lg font-semibold text-white">
+                        <h2 className="reduced-text font-semibold text-white">
                             Effective Date: <span id="versioneffectivedate"></span>
                         </h2>
                     </div>

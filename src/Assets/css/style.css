@@ -1736,3 +1736,7 @@ textarea {
 .accordion-header.open .toggleAccordion {
     transform: rotate(180deg);
 }
+
+.reduced-text {
+    font-size: 14px;
+}

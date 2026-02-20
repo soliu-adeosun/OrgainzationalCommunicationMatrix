@@ -181,7 +181,8 @@ function whenLayoutLoaded() {
               configPropertiesRoot.MANAGEMENT.setting,
               configPropertiesRoot.CEO.setting,
               configPropertiesRoot.REPORTADMIN.setting,
-              configPropertiesRoot.HOD.setting
+              configPropertiesRoot.HOD.setting,
+              configPropertiesRoot.COMMATRIX_ADMIN.setting
             ],
             { email : CurrentUserProperties.email, groupEmails: true },
             function(isUserMember, groupUserProperties){
@@ -192,8 +193,9 @@ function whenLayoutLoaded() {
                   const isInManagement = groupUserProperties[configPropertiesRoot.MANAGEMENT.setting]?.belongs || false; // adjust key if needed
                   const isInCEO = groupUserProperties[configPropertiesRoot.CEO.setting]?.belongs || false; // adjust key
                   const isInReportAdmin = groupUserProperties[configPropertiesRoot.REPORTADMIN.setting]?.belongs || false; // adjust key
+                  const isInCommatrixAdmin = groupUserProperties[configPropertiesRoot.COMMATRIX_ADMIN.setting]?.belongs || false;
 
-                  MainApplication.isPureHOD = isInHOD && !isInManagement && !isInCEO && !isInReportAdmin;
+                  MainApplication.isPureHOD = isInHOD && !isInManagement && !isInCEO && !isInReportAdmin && !isInCommatrixAdmin;
                   checkAppDependency();
               })
 
@@ -336,8 +338,8 @@ MainApplication.reportSyncSearch = function (keyquery, data) {
     item.EmployeeEmail?.toLowerCase().includes(keyquery) ||
     item.Approval_Status?.toLowerCase().includes(keyquery) ||
     item.Current_Approver?.toLowerCase().includes(keyquery) ||
-    item.RDC_Status?.toLowerCase().includes(keyquery) ||
-    item.Year?.toLowerCase().includes(keyquery)
+    item.Year?.toLowerCase().includes(keyquery) ||
+    item.Division_Unit?.toLowerCase().includes(keyquery)
   );
 };
 
@@ -407,7 +409,7 @@ MainApplication.renderCommunicationTemplatesReadOnly = function (dataArray) {
                         ${MainApplication.renderReadOnlySelect("ComplianceObligation", "Compliance Obligation:", ["Yes","No"], item.ComplianceObligation)}
                         ${MainApplication.renderReadOnlyInput("WhenToCommunicate", "When to Communicate:", item.WhenToCommunicate)}
                         ${MainApplication.renderReadOnlyInput("Recipient", "Recipient:", item.Recipient)}
-                        ${MainApplication.renderReadOnlySelect("Type", "Type:", ["Internal","External"], item.Type)}
+                        ${MainApplication.renderReadOnlySelect("Type", "Type:", ["Internal","External","Internal/External"], item.Type)}
 
                         <!-- Mode of Communication (Read Only List) -->
                         <div class="mt-2">
@@ -419,6 +421,100 @@ MainApplication.renderCommunicationTemplatesReadOnly = function (dataArray) {
 
                         ${MainApplication.renderReadOnlyInput("PrimaryResponsibility", "Primary Responsibility:", item.PrimaryResponsibility)}
                         ${MainApplication.renderReadOnlyInput("SecondaryResponsibility", "Secondary Responsibility:", item.SecondaryResponsibility)}
+
+                    </div>
+                </div>
+            </section>
+        `;
+
+        container.append(templateHTML);
+    });
+
+};
+
+MainApplication.renderCMTemplateForProcessAdmin = function (dataArray) {
+    const container = $('#communicationTemplatesContainer');
+    // container.empty();
+
+    if (!Array.isArray(dataArray)) return;
+
+    dataArray.forEach((item, index) => {
+        const templateId = `communicationTemplate_${Date.now()}_${index}`;
+
+        // ---- Parse ModeOfCommunication ----
+        let displayModes = [];
+
+        if (Array.isArray(item.ModeOfCommunication)) {
+            item.ModeOfCommunication.forEach(val => {
+                if (val.toLowerCase().startsWith("other:")) {
+                    displayModes.push(val); // Keep full text like "Other: Town Crier"
+                } else {
+                    displayModes.push(val);
+                }
+            });
+        }
+
+        // ---- Render Mode List HTML ----
+        const modesHTML = displayModes.length
+            ? displayModes.map(mode => `
+                <span class="px-2 py-1 bg-slate-100 text-slate-700 rounded text-xs font-medium">
+                    ${mode}
+                </span>
+            `).join("")
+            : `<span class="text-slate-400 italic text-sm">No mode selected</span>`;
+
+        const templateHTML = `
+            <section id="${templateId}" class="border border-gray-200 shadow-sm rounded mb-5">
+
+                <!-- Accordion Header -->
+                <div class="flex justify-between items-center bg-slate-100 px-4 py-3 cursor-pointer accordion-header">
+                    <div class="flex gap-3">
+                        <h2 class="text-lg font-bold text-navy-900 template-title">
+                            ${index + 1}
+                        </h2>
+
+                        <p data-bind="ContributorName" class="text-lg font-bold text-navy-900">
+                            ${item.ContributorName || ""}
+                        </p>
+
+                        <input type="hidden" data-bind="ContributorEmail" value="${item.ContributorEmail || ""}" />
+                    </div>
+
+                    <div class="flex gap-3">
+                        <span class="toggleAccordion inline-flex items-center justify-center transition-transform duration-300">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Accordion Body -->
+                <div class="accordion-body bg-white p-4 sm:p-6">
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+
+                        ${MainApplication.renderReadOnlyInput("WhatToCommunicate", "What to Communicate:", item.WhatToCommunicate)}
+                        ${MainApplication.renderReadOnlySelect("ComplianceObligation", "Compliance Obligation:", ["Yes","No"], item.ComplianceObligation)}
+                        ${MainApplication.renderReadOnlyInput("WhenToCommunicate", "When to Communicate:", item.WhenToCommunicate)}
+                        ${MainApplication.renderReadOnlyInput("Recipient", "Recipient:", item.Recipient)}
+                        ${MainApplication.renderReadOnlySelect("Type", "Type:", ["Internal","External","Internal/External"], item.Type)}
+
+                        <!-- Mode of Communication (Read Only List) -->
+                        <div class="mt-2">
+                            <label class="block text-sm font-medium text-blue-600 mb-2">Mode of Communication:</label>
+                            <div class="flex flex-wrap gap-2 text-sm">
+                                ${modesHTML}
+                            </div>
+                        </div>
+
+                        ${MainApplication.renderReadOnlyInput("PrimaryResponsibility", "Primary Responsibility:", item.PrimaryResponsibility)}
+                        ${MainApplication.renderReadOnlyInput("SecondaryResponsibility", "Secondary Responsibility:", item.SecondaryResponsibility)}
+                        ${MainApplication.renderEditableSelect(
+                            "Status",
+                            "Status:",
+                            ["Conformance", "Non-Conformance", "Not Applicable"] || ""
+                        )}
 
                     </div>
                 </div>
@@ -456,6 +552,76 @@ MainApplication.renderReadOnlySelect = function (bind, label, options, selected)
             </select>
         </div>
     `;
+};
+
+MainApplication.renderEditableSelect = function (bind, label, options, selected) {
+    return `
+        <div class="mt-2">
+            <label class="block text-sm font-medium text-blue-600 mb-2">${label}</label>
+            <select data-bind="${bind}" speed-bind-validate='TempData' speed-validate-msg="Please select a status"
+                    class="w-full px-3 sm:px-4 py-2 sm:py-3 appearance-none dropdown-arrow focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm sm:text-base">
+                <option value="">Select Status</option>
+                ${options.map(opt => `
+                    <option value="${opt}" ${opt === selected ? "selected" : ""}>${opt}</option>
+                `).join("")}
+            </select>
+        </div>
+    `;
+};
+
+MainApplication.mergeStatusesIntoCMData = function (existingData) {
+
+    if (!Array.isArray(existingData)) return existingData;
+
+    $('#communicationTemplatesContainer section').each(function (index) {
+
+        const selectedStatus = $(this)
+            .find('[data-bind="Status"]')
+            .val();
+
+        // Merge into original array by index
+        if (existingData[index]) {
+            existingData[index].Status = selectedStatus || "";
+        }
+
+    });
+
+    return existingData;
+};
+
+MainApplication.countStatusSummary = function (dataArray) {
+
+    const summary = {
+        conformance: 0,
+        nonConformance: 0,
+        notApplicable: 0,
+        total: 0
+    };
+
+    if (!Array.isArray(dataArray)) return summary;
+
+    dataArray.forEach(item => {
+
+        switch (item.Status) {
+            case "Conformance":
+                summary.conformance++;
+                summary.total++;
+                break;
+
+            case "Non-Conformance":
+                summary.nonConformance++;
+                summary.total++;
+                break;
+
+            case "Not Applicable":
+                summary.notApplicable++;
+                summary.total++;
+                break;
+        }
+
+    });
+
+    return summary;
 };
 
 whenLayoutLoaded();
