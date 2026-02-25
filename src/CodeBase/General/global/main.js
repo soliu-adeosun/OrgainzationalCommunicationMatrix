@@ -306,8 +306,8 @@ function whenLayoutLoaded() {
           if (MainApplication.isUserAnActor){
             $(".reportNav").show();
             $(".reportNavMobile").show();
-            $(".analyticsNav").show();
-            $(".analyticsNavMobile").show();
+            // $(".analyticsNav").show();
+            // $(".analyticsNavMobile").show();
 
             // $(".newNCNav").show();
             // $(".newNCNavMobile").show();

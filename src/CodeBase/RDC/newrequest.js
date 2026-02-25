@@ -742,7 +742,7 @@ MainApplication.NewRequestComponent.renderCommunicationTemplatesFromData = funct
                         ${MainApplication.NewRequestComponent.renderBoundSelect("ComplianceObligation", "Compliance Obligation:", ["Yes", "No"], item.ComplianceObligation)}
                         ${MainApplication.NewRequestComponent.renderBoundInput("WhenToCommunicate", "When to Communicate:", item.WhenToCommunicate)}
                         ${MainApplication.NewRequestComponent.renderBoundInput("Recipient", "Recipient:", item.Recipient)}
-                        ${MainApplication.NewRequestComponent.renderBoundSelect("Type", "Type:", ["Internal", "External"], item.Type)}
+                        ${MainApplication.NewRequestComponent.renderBoundSelect("Type", "Type:", ["Internal", "External", "Internal/External"], item.Type)}
 
                         <!-- Mode of Communication -->
                         <div class="mt-2">

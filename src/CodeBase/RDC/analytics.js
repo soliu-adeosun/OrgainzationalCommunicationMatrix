@@ -50,15 +50,15 @@ whenAnalyticsDependeciesLoaded = function () {
         MainApplication.AnalyticsComponent.renderComplianceDashboard(filteredItems);
     });
 
-    if (MainApplication.isUserAnActor) {
+    // if (MainApplication.isUserAnActor) {
         MainApplication.AnalyticsComponent.retrieveRequest();
-        globalDefinitions.closeLoader();
-    }
-    else {
-        globalDefinitions.HandlerError("You are not authorized to access this resource...");
-        $spcontext.redirect("#/", false);
-        globalDefinitions.closeLoader();
-    }
+    //     globalDefinitions.closeLoader();
+    // }
+    // else {
+    //     globalDefinitions.HandlerError("You are not authorized to access this resource...");
+    //     $spcontext.redirect("#/", false);
+    //     globalDefinitions.closeLoader();
+    // }
     setTimeout(function () {
         globalDefinitions.closeLoader();
     }, 2000);
