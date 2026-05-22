@@ -178,7 +178,6 @@ MainApplication.NewRequestComponent.recoverListData = function () {
             //     globalDefinitions.displayHistory(listProperties.Transaction_History);
             // }
             MainApplication.NewRequestComponent.renderCommunicationTemplatesFromData(listProperties.CMData);
-            console.log("Communication Data: ", listProperties.CMData);
             AppRequest.requestDetails = listProperties;
             $spcontext.htmlBind(listProperties);
 
@@ -725,6 +724,17 @@ MainApplication.NewRequestComponent.renderCommunicationTemplatesFromData = funct
                     </div>
 
                     <div class="flex gap-3">
+                        ${
+                            item.ContributorEmail === CurrentUserProperties.email
+                                ? `
+                        <button class="deleteTemplate text-sm text-slate-440 hover:text-red-600 hover:bg-red-50 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                                `
+                                : ''
+                        }
                         <span class="toggleAccordion inline-flex items-center justify-center transition-transform duration-300">
                             <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>

@@ -67,8 +67,8 @@ export default class NewRequest extends React.Component<{}, {}> {
 				</div>
 
 				<div className="action-btns hidden flex justify-center items-center gap-3" style={{ marginTop: "2rem" }}>
-					<ClientButton text={"Submit"} func={"MainApplication.NewRequestComponent.confirmSubmit"} clax={"px-4 py-2 text-sm font-medium submit-button"} prop="NewRequest" attr="" />
-					<ClientButton text={"Save"} func={"MainApplication.NewRequestComponent.confirmSubmit"} clax={"px-4 py-2 bg-slate-500 text-white text-sm font-medium hover:bg-slate-600 transition-colors"} prop="Draft" attr="id='draftbtn'" />
+					<ClientButton text={"Submit"} func={"NewRequestComponent.confirmSubmit"} clax={"px-4 py-2 text-sm font-medium submit-button"} prop="NewRequest" attr="" />
+					<ClientButton text={"Save"} func={"NewRequestComponent.confirmSubmit"} clax={"px-4 py-2 bg-slate-500 text-white text-sm font-medium hover:bg-slate-600 transition-colors"} prop="Draft" attr="id='draftbtn'" />
 					<Link to="/" className="px-4 py-2 bg-red-500 text-white text-sm font-medium hover:bg-red-600 transition-colors">
 						Cancel
 					</Link>

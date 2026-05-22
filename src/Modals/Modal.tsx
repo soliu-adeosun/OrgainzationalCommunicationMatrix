@@ -112,7 +112,7 @@ export default class Modal extends React.Component<{}, {}> {
                             </div>
                             <div className="modal-footer">
                                 
-                                <ClientButton text={"Yes"} func={"MainApplication.confirmAction"} clax={"px-4 py-2 bg-slate-500 text-white text-sm font-medium hover:bg-slate-600 transition-colors"} prop="" attr="" />
+                                <ClientButton text={"Yes"} func={"confirmAction"} clax={"px-4 py-2 bg-slate-500 text-white text-sm font-medium hover:bg-slate-600 transition-colors"} prop="" attr="" />
                                 <button
                                     type="button"
                                     className="px-4 py-2 bg-red-500 text-white text-sm font-medium hover:bg-red-600 transition-colors"
@@ -184,7 +184,7 @@ export default class Modal extends React.Component<{}, {}> {
                                     </div>
                                     <div className="form-group d-flex justify-content-end gap-3">
                                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Back</button>
-                                        <ClientButton text={"Update"} func={"MainApplication.ReportComponent.updateRoute"} clax={"btn btn-primary"} prop="" attr="" />
+                                        <ClientButton text={"Update"} func={"ReportComponent.updateRoute"} clax={"btn btn-primary"} prop="" attr="" />
                                     </div>
                                 </div>
                             </div>

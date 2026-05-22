@@ -274,12 +274,12 @@ MainApplication.DashboardComponent.pendingRequests = function () {
         ascending: "FALSE",
         orderby: "Modified"
     },
-    {
-        operator: 'Eq',
-        field: 'Division_Unit',
-        type: 'Text',
-        val: MainApplication.staffDetails[CurrentUserProperties.email].Department
-    },
+    // {
+    //     operator: 'Eq',
+    //     field: 'Division_Unit',
+    //     type: 'Text',
+    //     val: MainApplication.staffDetails[CurrentUserProperties.email].Department
+    // },
     {
         operator: 'Eq',
         field: 'Approval_Status',

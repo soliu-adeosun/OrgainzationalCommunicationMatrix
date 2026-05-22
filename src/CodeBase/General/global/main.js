@@ -176,7 +176,7 @@ function whenLayoutLoaded() {
             checkAppDependency();
           });
 
-          popContext.isUserMemberOfGroup(
+          $spcontext.isUserMemberOfGroup(
             [
               configPropertiesRoot.MANAGEMENT.setting,
               configPropertiesRoot.CEO.setting,
@@ -199,7 +199,7 @@ function whenLayoutLoaded() {
                   checkAppDependency();
               })
 
-          popContext.isCurrentUserMemberOfGroup(configPropertiesRoot.REPORTADMIN.setting, function (isAdmin) {
+          $spcontext.isCurrentUserMemberOfGroup(configPropertiesRoot.REPORTADMIN.setting, function (isAdmin) {
               MainApplication.cachedState.isReportAdmin = isAdmin || false;
               checkAppDependency();
           });

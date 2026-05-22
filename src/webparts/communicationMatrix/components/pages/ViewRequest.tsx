@@ -11,7 +11,7 @@ export default class ViewRequest extends React.Component<{}, {}> {
 
 
                 <div className="action-btns flex justify-center items-center gap-3" style={{ marginTop: "2rem" }}>
-                    <ClientButton text={"Update"} func={"MainApplication.ViewRequestComponent.updateStatus"} clax={"px-4 py-2 text-sm font-medium update-button submit-button hidden"} prop="ViewRequest" attr="" />                  
+                    <ClientButton text={"Update"} func={"ViewRequestComponent.updateStatus"} clax={"px-4 py-2 text-sm font-medium update-button submit-button hidden"} prop="ViewRequest" attr="" />                  
                     <Link to="/" className="px-4 py-2 bg-red-500 text-white text-sm font-medium hover:bg-red-600 transition-colors">
                         Cancel
                     </Link>
